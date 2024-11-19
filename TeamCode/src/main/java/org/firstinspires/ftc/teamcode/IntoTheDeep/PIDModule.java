@@ -12,7 +12,7 @@ public class PIDModule {
 
     private ElapsedTime time = new ElapsedTime();
 
-    public PIDModule(com.qualcomm.robotcore.hardware.PIDCoefficients coefs){
+    public PIDModule(PIDCoefficients coefs){
         pidcoef = coefs;
     }
 

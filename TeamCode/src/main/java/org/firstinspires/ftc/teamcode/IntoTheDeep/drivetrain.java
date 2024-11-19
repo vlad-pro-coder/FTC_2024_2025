@@ -1,16 +1,19 @@
 package org.firstinspires.ftc.teamcode.IntoTheDeep;
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.gamepad1;
-import org.firstinspires.ftc.teamcode.IntoTheDeep.motorWraper.DIRECTION;
+
+import org.firstinspires.ftc.teamcode.IntoTheDeep.WraperClasses.hardwareWrapers.motorWraper;
+import org.firstinspires.ftc.teamcode.IntoTheDeep.WraperClasses.hardwareWrapers.motorWraper.DIRECTION;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.PIDCoefficients;
 
 public class drivetrain {
 
     motorWraper mfl,mfr,mbl,mbr;
     public drivetrain(HardwareMap hardwareMap){
-            motorWraper mfl = new motorWraper(hardwareMap,"mfl",DIRECTION.FORWARD);
-            motorWraper mfr = new motorWraper(hardwareMap,"mfr",DIRECTION.FORWARD);
-            motorWraper mbl = new motorWraper(hardwareMap,"mbl",DIRECTION.FORWARD);
-            motorWraper mbr = new motorWraper(hardwareMap,"mbr",DIRECTION.FORWARD);
+            motorWraper mfl = new motorWraper(hardwareMap,"mfl",DIRECTION.FORWARD,new PIDCoefficients(0,0,0));
+            motorWraper mfr = new motorWraper(hardwareMap,"mfr",DIRECTION.FORWARD,new PIDCoefficients(0,0,0));
+            motorWraper mbl = new motorWraper(hardwareMap,"mbl",DIRECTION.FORWARD,new PIDCoefficients(0,0,0));
+            motorWraper mbr = new motorWraper(hardwareMap,"mbr",DIRECTION.FORWARD,new PIDCoefficients(0,0,0));
     }
 
     public void idleMotors(){
