@@ -5,55 +5,50 @@ import com.qualcomm.robotcore.hardware.PIDCoefficients;
 
 import org.firstinspires.ftc.teamcode.IntoTheDeep.StateRoullete.PTOSteps;
 import org.firstinspires.ftc.teamcode.IntoTheDeep.WraperClasses.MovingState;
-import org.firstinspires.ftc.teamcode.IntoTheDeep.WraperClasses.softwareWrapers.Intake;
+import org.firstinspires.ftc.teamcode.IntoTheDeep.WraperClasses.moduleWrapers.FullLift;
+import org.firstinspires.ftc.teamcode.IntoTheDeep.WraperClasses.moduleWrapers.Intake;
 import org.firstinspires.ftc.teamcode.IntoTheDeep.WraperClasses.softwareWrapers.Lift;
 import org.firstinspires.ftc.teamcode.IntoTheDeep.WraperClasses.softwareWrapers.WheelieServosWraper;
 
 public class PTOSpecificTasks {
     PTOSteps ptoSteps = new PTOSteps();
-    Lift currLift;
+    FullLift currLift;
     Intake currIntake;
     WheelieServosWraper wheelie;
     PIDCoefficients pidcoefs = new PIDCoefficients(0,0,0);
 
-    public PTOSpecificTasks(HardwareMap hardwareMap,Lift lift, Intake intake){
+    public PTOSpecificTasks(HardwareMap hardwareMap, FullLift lift, Intake intake){
         currLift = lift;
         currIntake = intake;
         wheelie = new WheelieServosWraper(hardwareMap);
     }
 
     public void updcommands(){
-        currLift.setGoalPos(0);
+        currLift.setGoal(0);
         switch(ptoSteps.GetState()){
             case EXTENDLIFTFIRSTRANG:
-                if(currLift.getPos() != 0)
-                    break;
-                currLift.setGoalPos(200);
-                if(currLift.getPos() == 200) {
-                    currLift.setGoalPos(0);
+                currLift.setGoal(200);
+                if(currLift.getState() == MovingState.REACHED) {
+                    currLift.setGoal(0);
                     ptoSteps.advanceStage();
                 }
                 break;
             case WHEELIE:
-                if(currLift.getPos() != 0)
-                    break;
                 wheelie.setPos(200);
                 if(wheelie.getState() == MovingState.REACHED) {
                     ptoSteps.advanceStage();
                 }
                 break;
             case CLAMPDOWNONBARFIRST:
-                currLift.setGoalPos(0);
-                if(currLift.getPos() == 0) {
+                currLift.setGoal(0);
+                if(currLift.getState() == MovingState.REACHED) {
                     ptoSteps.advanceStage();
                 }
                 break;
             case EXTENDLIFTTOSECONDBAR:
-                if(currLift.getPos() != 0)
-                    break;
-                currLift.setGoalPos(200);
-                if(currLift.getPos() == 200) {
-                    currLift.setGoalPos(0);
+                currLift.setGoal(200);
+                if(currLift.getState() == MovingState.REACHED) {
+                    currLift.setGoal(0);
                     ptoSteps.advanceStage();
                 }
                 break;
@@ -65,19 +60,20 @@ public class PTOSpecificTasks {
                 }
                 break;
             case CLAMPDOWNONBARSECONDANDRETRACTEXTENDO:
-                currLift.setGoalPos(0);
-                if(currLift.getPos() == 0) {
+                currLift.setGoal(0);
+                if(currLift.getState() == MovingState.REACHED) {
                     currIntake.setGoalExtendoMotor(0);
                     if (currIntake.getPos() == 0)
                         ptoSteps.advanceStage();
                 }
                 break;
             case STANDSTILL:
-                currLift.setGoalPos(0);
+                currLift.setGoal(0);
                 currIntake.setGoalExtendoMotor(0);
                 break;
         }
         currLift.updPos();
         currIntake.GoalUpd();
+        wheelie.updServos();
     }
 }

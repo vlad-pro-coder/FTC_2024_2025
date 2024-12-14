@@ -14,13 +14,13 @@ public class Extendo {
     Gamepad prev = new Gamepad();
 
     public Extendo(HardwareMap hardwareMap){
-        m1 = new motorWraper(hardwareMap,"", motorWraper.DIRECTION.FORWARD,new PIDCoefficients(0,0,0));
+        //m1 = new motorWraper(hardwareMap,"", motorWraper.DIRECTION.FORWARD,new PIDCoefficients(0,0,0));
     }
 
     public void setGoal(double goal) {
         m1.setGoalPos(goal);
     }
-    public void updPosition(){
+    public void updPos(){
         m1.updGoalPos();
     }
 

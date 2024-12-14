@@ -1,8 +1,10 @@
-package org.firstinspires.ftc.teamcode.IntoTheDeep.WraperClasses.hardwareWrapers;
+package org.firstinspires.ftc.teamcode.Alejandra.hardwareWrapers;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
+
+import org.firstinspires.ftc.teamcode.Alejandra.PositionState;
 
 public class ServoWraper {
 
@@ -17,8 +19,7 @@ public class ServoWraper {
     public double distance;
 
     ///constants between pos changes;
-    public double startPos,sign;
-    public double distAccel,distanceCruise,timeInAccel,timeInCruise;
+    private double startPos,sign;
 
     public ServoWraper(HardwareMap hardwareMap, String name , double maxSpeed,double maxAcceleration){
         servo = hardwareMap.get(Servo.class,name);
@@ -39,25 +40,30 @@ public class ServoWraper {
     public void setProfilePosition(double TargetPos){
 
         this.startPos = CurrentPos;
-        this.TargetPos = AngleToPower(TargetPos);
-        sign = Math.signum(this.TargetPos - CurrentPos);
-        distance = Math.abs(this.TargetPos - CurrentPos);
-
-        distAccel = maxSpeed * maxSpeed / (2*maxAcceleration);
-
-        if(distAccel * 2 > distance)
-            distAccel = distance / 2;
-
-        distanceCruise = distance - distAccel*2;
-        timeInAccel = Math.sqrt(distAccel * 2 / maxAcceleration);
-        timeInCruise = distanceCruise / maxSpeed;
-
+        this.TargetPos = TargetPos;
+        sign = Math.signum(TargetPos - CurrentPos);
+        distance = Math.abs(TargetPos - CurrentPos);
         time.reset();
+    }
+
+    public PositionState getPos() {
+        if(CurrentPos == TargetPos)
+            return PositionState.REACHED;
+        return PositionState.MOVING;
     }
 
     public void updProfile(){
 
         double currentTime = time.seconds();
+
+        double distAccel = maxSpeed * maxSpeed / (2*maxAcceleration);
+
+        if(distAccel * 2 > distance)
+            distAccel = distance / 2;
+
+        double distanceCruise = distance - distAccel*2;
+        double timeInAccel = Math.sqrt(distAccel * 2 / maxAcceleration);
+        double timeInCruise = distanceCruise / maxSpeed;
 
         if(currentTime > timeInCruise + 2*timeInAccel){
             CurrentPos = TargetPos;

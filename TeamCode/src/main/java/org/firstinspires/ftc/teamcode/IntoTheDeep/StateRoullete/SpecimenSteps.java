@@ -9,11 +9,10 @@ public class SpecimenSteps {
 
     Vector<SpecimentStepsToTake> orderedSteps = new Vector<SpecimentStepsToTake>(Arrays.asList(
             SpecimentStepsToTake.WALLPOSITION,
-            SpecimentStepsToTake.OPENCLAW,
             SpecimentStepsToTake.CLOSECLAW,
             SpecimentStepsToTake.ROTATEOVERHEAD,
-            SpecimentStepsToTake.PULLDOWN,
-            SpecimentStepsToTake.RETRACTNORMAL
+            SpecimentStepsToTake.GETLIFTUP,
+            SpecimentStepsToTake.RETRACTNORMALWHILEPULLING
     ));
     int index=0;
 

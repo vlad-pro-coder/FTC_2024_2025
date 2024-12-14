@@ -1,12 +1,10 @@
-package org.firstinspires.ftc.teamcode.IntoTheDeep.WraperClasses.softwareWrapers;
+package org.firstinspires.ftc.teamcode.IntoTheDeep.WraperClasses.moduleWrapers;
 
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.PIDCoefficients;
 
-import org.firstinspires.ftc.teamcode.IntoTheDeep.WraperClasses.hardwareWrapers.ServoWraper;
-import org.firstinspires.ftc.teamcode.IntoTheDeep.WraperClasses.hardwareWrapers.motorWraper;
-import org.firstinspires.ftc.teamcode.IntoTheDeep.WraperClasses.hardwareWrapers.motorWraper.DIRECTION;
+import org.firstinspires.ftc.teamcode.IntoTheDeep.WraperClasses.softwareWrapers.Extendo;
+import org.firstinspires.ftc.teamcode.IntoTheDeep.WraperClasses.softwareWrapers.IntakeRollingMotor;
 
 enum IntakeState {
     STOPPED,
@@ -16,17 +14,14 @@ enum IntakeState {
 public class Intake {
 
     private IntakeState Currstate;
-    private motorWraper motor;
     private Extendo extendo;
     Gamepad prev = new Gamepad();
-    ServoWraper down1,down2;
     private double Goal=0;
+    IntakeRollingMotor rollingMotor;
 
     public Intake(HardwareMap hardwareMap){
-        motor = new motorWraper(hardwareMap,"ceva", DIRECTION.FORWARD,new PIDCoefficients(0,0,0));
         extendo = new Extendo(hardwareMap);
-        down1 = new ServoWraper(hardwareMap,"");
-        down2 = new ServoWraper(hardwareMap,"");
+        rollingMotor = new IntakeRollingMotor(hardwareMap);
         Currstate = IntakeState.STOPPED;
     }
 
@@ -39,7 +34,7 @@ public class Intake {
     }
 
     public void GoalUpd(){
-        extendo.updPosition();
+        extendo.updPos();
     }
 
     public void updIntake(Gamepad gamepad){
@@ -50,29 +45,31 @@ public class Intake {
             else
                 Currstate = IntakeState.ROTATETOEJECT;
         }
+        if(gamepad.dpad_up)
+        {
+            Goal+=1;
+            extendo.setGoal(Goal);
+        }
+        if(gamepad.dpad_down)
+        {
+            Goal-=1;
+            extendo.setGoal(Goal);
+        }
 
         if(gamepad.a)
             Currstate = IntakeState.STOPPED;
 
         switch(Currstate){
             case STOPPED:
-                motor.setPower(0);
-                down1.setAngle(0);
-                down2.setAngle(0);
+                rollingMotor.stop();
                 break;
             case ROTATETOTAKE:
-                motor.setPower(1);
-                down1.setAngle(100);
-                down2.setAngle(100);
+                rollingMotor.rollForward();
                 break;
             case ROTATETOEJECT:
-                motor.setPower(-1);
-                down1.setAngle(100);
-                down2.setAngle(100);
+                rollingMotor.rollBackward();
                 break;
         }
-
-
         prev.copy(gamepad);
     }
 

@@ -7,15 +7,15 @@ import org.firstinspires.ftc.teamcode.IntoTheDeep.WraperClasses.hardwareWrapers.
 
 public class Lift {
 
-    public static double goalPos=0,goalVel=0;
+    public static double goalPos=0;
     motorWraper fastMotor;
     PTOInterchangeWraper PTOWraper;
+    public static PIDCoefficients pidcoef = new PIDCoefficients(0.01,0,0);
     public Lift(HardwareMap hardwareMap){
-        fastMotor = new motorWraper(hardwareMap,"", motorWraper.DIRECTION.FORWARD, new PIDCoefficients(0,0,0));
-        PTOWraper = new PTOInterchangeWraper(hardwareMap);
+        fastMotor = new motorWraper(hardwareMap,"test", motorWraper.DIRECTION.FORWARD,pidcoef);
     }
 
-    public void setGoalPos(double pos){
+    public void setGoal(double pos){
         fastMotor.setGoalPos(goalPos);
     }
 
@@ -29,6 +29,5 @@ public class Lift {
 
     public void changecoefs(PIDCoefficients coefs){
         fastMotor.changeCoefs(coefs);
-        PTOWraper.changecoefs(coefs);
     }
 }

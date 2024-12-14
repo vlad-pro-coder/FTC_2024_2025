@@ -4,6 +4,7 @@ public enum BasketStepsToTake{
     ALIGNWITHINTAKE,
     CLOSECLAW,
     LIFTUP,
+    ROTATEARM,
     OPENCLAW,
     RETRACTNORMAL
 }

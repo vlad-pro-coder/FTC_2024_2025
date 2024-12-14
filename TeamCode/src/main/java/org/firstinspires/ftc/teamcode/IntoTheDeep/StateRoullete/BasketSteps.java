@@ -11,6 +11,7 @@ public class BasketSteps {
             BasketStepsToTake.ALIGNWITHINTAKE,
             BasketStepsToTake.CLOSECLAW,
             BasketStepsToTake.LIFTUP,
+            BasketStepsToTake.ROTATEARM,
             BasketStepsToTake.OPENCLAW,
             BasketStepsToTake.RETRACTNORMAL
     ));

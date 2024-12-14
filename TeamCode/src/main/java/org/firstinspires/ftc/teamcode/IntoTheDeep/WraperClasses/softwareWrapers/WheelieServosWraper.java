@@ -11,21 +11,25 @@ public class WheelieServosWraper {
     private double target = 0;
 
     public WheelieServosWraper(HardwareMap hardwareMap){
-        s1 = new ServoWraper(hardwareMap,"");
-        s2 = new ServoWraper(hardwareMap,"");
+        //s1 = new ServoWraper(hardwareMap,"");
+        //s2 = new ServoWraper(hardwareMap,"");
     }
 
     public void setPos(double angle){
-        s1.setAngle(angle);
-        s2.setAngle(angle);
+        s1.setProfilePosition(angle);
+        s2.setProfilePosition(angle);
         target = angle;
-
     }
 
     public MovingState getState(){
-        if(s1.getPos() == target&&s2.getPos() == target)
+        if(s1.getPosAngle() == target&&s2.getPosAngle() == target)
             return MovingState.REACHED;
         return MovingState.MOVING;
+    }
+
+    public void updServos(){
+        s1.updProfile();
+        s2.updProfile();
     }
 
 }
