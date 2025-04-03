@@ -1,0 +1,37 @@
+package org.firstinspires.ftc.teamcode.IntoTheDeep.WraperClasses.TaskRelated;
+
+public enum TaskEnumsOverall {
+
+    NEUTRE_POSITION,
+
+    //for sample switch
+    LIFT_UP_FOR_OVERHEAD_TURN,
+    PULL_DOWN_IF_OUTTAKE_DONE,
+
+    SAMPLE_MODE,
+    SPECIMEN_MODE,
+
+    //specimen
+    WALL_POSITION,
+    CLOSE_CLAW_ON_SPECIMEN,
+    BAR_POSITION,
+
+    //sample
+    GET_EXTENDO_BACK,
+    STORAGE_POSITION,
+    DRAG_LIFT_DOWN,
+    CLOSE_CLAW,
+    CLOSE_CLAW_ON_SAMPLE,
+    HOLD_TO_HIGH_BASKET,
+    HOLD_TO_LOW_BASKET,
+    LET_GO_SAMPLE,
+    NEUTRE_POSITION_OUTTAKE,
+    SAFELY_DRAG_LIFT_DOWN,
+
+    //hang logic
+
+    WHEELIE_LIFT_TO_FIRST_BAR,
+    ENGAGE_AND_DRAGDOWN_TILL_POS_ZERO_1,
+    DISENGAGE_AND_SET_LIFT_TO_POS_OVER_SECOND_BAR_WHEELIE_RETRACT,
+    ENGAGE_AND_DRAGDOWN_TILL_POS_ZERO_2,
+}

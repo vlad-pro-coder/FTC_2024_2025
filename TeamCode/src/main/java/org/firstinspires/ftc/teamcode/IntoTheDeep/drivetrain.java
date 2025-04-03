@@ -1,19 +1,27 @@
 package org.firstinspires.ftc.teamcode.IntoTheDeep;
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.gamepad1;
 
 import org.firstinspires.ftc.teamcode.IntoTheDeep.WraperClasses.hardwareWrapers.motorWraper;
-import org.firstinspires.ftc.teamcode.IntoTheDeep.WraperClasses.hardwareWrapers.motorWraper.DIRECTION;
+import org.firstinspires.ftc.teamcode.IntoTheDeep.WraperClasses.hardwareWrapers.motorWraper;
+
+import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.PIDCoefficients;
 
 public class drivetrain {
 
-    motorWraper mfl,mfr,mbl,mbr;
+    DcMotorEx mfl,mfr,mbl,mbr;
+
+    public String data,data_console;
     public drivetrain(HardwareMap hardwareMap){
-            motorWraper mfl = new motorWraper(hardwareMap,"mfl",DIRECTION.FORWARD,new PIDCoefficients(0,0,0));
-            motorWraper mfr = new motorWraper(hardwareMap,"mfr",DIRECTION.FORWARD,new PIDCoefficients(0,0,0));
-            motorWraper mbl = new motorWraper(hardwareMap,"mbl",DIRECTION.FORWARD,new PIDCoefficients(0,0,0));
-            motorWraper mbr = new motorWraper(hardwareMap,"mbr",DIRECTION.FORWARD,new PIDCoefficients(0,0,0));
+        mfl = hardwareMap.get(DcMotorEx.class,"mfl");
+        mfr = hardwareMap.get(DcMotorEx.class,"mfr");
+        mbl = hardwareMap.get(DcMotorEx.class,"mbl");
+        mbr = hardwareMap.get(DcMotorEx.class,"mbr");
+
+        mfl.setDirection(DcMotorSimple.Direction.REVERSE);
+        mbl.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
     public void idleMotors(){
@@ -23,17 +31,20 @@ public class drivetrain {
         mbr.setPower(0);
     }
 
-    public void setWheelsPower() {
+    public void setWheelsPower(Gamepad gm1) {
 
-        double x = gamepad1.left_stick_x;
-        double y = -gamepad1.left_stick_y;
-        double rx = gamepad1.right_trigger - gamepad1.left_trigger;
+        double x = gm1.left_stick_x;
+        double y = gm1.left_stick_y;
+        double rx = gm1.right_trigger - gm1.left_trigger;
 
-        double difference = Math.min(Math.abs(x)+Math.abs(y)+Math.abs(rx),1);
+        double difference = Math.max(Math.abs(x)+Math.abs(y)+Math.abs(rx*rx*rx/2.0),1.0);
 
-        mfl.setPower((y+x+rx)/difference);
-        mbl.setPower((y-x+rx)/difference);
-        mfr.setPower((y-x-rx)/difference);
-        mbr.setPower((y+x-rx)/difference);
+        data = "mfr" + " " + (y+x-rx*rx*rx/2.0)/difference + " " + "mfl" + " " + (y+x+rx*rx*rx/2.0)/difference + " " + "mbr" + " " + (y-x-rx*rx*rx/2.0)/difference + " " + "mbl" + " " + (y-x+rx*rx*rx/2.0)/difference;
+        data_console = "x" + " " + x + "y" + " " + y + "rx" + " " + rx + "difference" + " " + difference;
+
+        mfl.setPower((double)(y-x+rx*rx*rx/2.0)/difference);
+        mbl.setPower((double)(y+x+rx*rx*rx/2.0)/difference);
+        mfr.setPower((double)(y+x-rx*rx*rx/2.0)/difference);
+        mbr.setPower((double)(y-x-rx*rx*rx/2.0)/difference);
     }
 }

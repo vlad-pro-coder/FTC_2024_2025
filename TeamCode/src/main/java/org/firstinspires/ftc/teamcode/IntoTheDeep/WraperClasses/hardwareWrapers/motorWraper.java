@@ -1,76 +1,81 @@
 package org.firstinspires.ftc.teamcode.IntoTheDeep.WraperClasses.hardwareWrapers;
 
+import androidx.annotation.NonNull;
+
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorController;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.PIDCoefficients;
+import com.qualcomm.robotcore.hardware.DcMotorImplEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.HardwareDevice;
+import com.qualcomm.robotcore.hardware.configuration.annotations.DeviceProperties;
+import com.qualcomm.robotcore.hardware.configuration.annotations.MotorType;
 import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigurationType;
 
-import org.firstinspires.ftc.teamcode.IntoTheDeep.PIDModule;
-import org.firstinspires.ftc.teamcode.IntoTheDeep.WraperClasses.MovingState;
+import org.firstinspires.ftc.robotcore.external.navigation.Rotation;
+
+import java.util.Objects;
 
 
-public class motorWraper {
-    public enum DIRECTION{
-        FORWARD,
-        INVERSE
+@DeviceProperties(
+        xmlTag = "cachedMotor",
+        name = "CachedMotor",
+        description = "generic motor",
+        builtIn = false
+)
+@MotorType(
+        ticksPerRev = 1550,
+        gearing = 55,
+        maxRPM = 6000,
+        achieveableMaxRPMFraction = 1.0,
+        orientation = Rotation.CCW
+)
+
+public class motorWraper extends DcMotorImplEx implements DcMotorEx, HardwareDevice {
+    private double lastSetPower = 69;
+    private static double MAX_VELOCITY;
+    public motorWraper(DcMotorController controller, int portNumber) {
+
+        super(controller, portNumber);
+    }
+    public motorWraper(DcMotorController controller, int portNumber, DcMotorSimple.Direction direction){
+        super(controller, portNumber, direction);
+    }
+    public motorWraper(DcMotorController controller, int portNumber, DcMotorSimple.Direction direction, @NonNull MotorConfigurationType mct){
+        super(controller, portNumber, direction, Objects.requireNonNull(mct));
+
+        mct.setAchieveableMaxRPMFraction(1.0);
+        this.controller.setMotorType(portNumber, mct.clone());
+    }
+    public motorWraper(DcMotor motor){
+        super(motor.getController(), motor.getPortNumber(), motor.getDirection(), motor.getMotorType());
+        motor.setZeroPowerBehavior(ZeroPowerBehavior.BRAKE);
+        lastSetPower = 69;
+    }
+    /**
+     * MaxVelocity is measured in [outputDiameter]_(SI) / s, we recommend using m/s
+     * <p>
+     * @param gearRatio is measured as output / input
+     * </p>
+     * */
+    public void setMaxVelocity(double MaxRPM, double gearRatio, double CPR){
+        MAX_VELOCITY = MaxRPM * gearRatio * CPR;
+    }
+    public double getMaxVelocity(){
+        return MAX_VELOCITY;
     }
 
-    PIDModule pidModule;
-    private DcMotorEx motor;
-    private double GoalPos = 0;
-
-    public motorWraper(HardwareMap hardwareMap, String HubId, DIRECTION direction, PIDCoefficients pidcoefs){
-
-        motor = hardwareMap.get(DcMotorEx.class,HubId);
-
-        motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-        switch(direction) {
-            case FORWARD:
-                motor.setDirection(DcMotor.Direction.FORWARD);
-            case INVERSE:
-                motor.setDirection(DcMotor.Direction.REVERSE);
-        }
-
-        MotorConfigurationType mct = motor.getMotorType();
-        mct.setAchieveableMaxRPMFraction(1);
-        motor.setMotorType(mct);
-
-        pidModule = new PIDModule(pidcoefs);
-    }
-
+    @Override
     public void setPower(double power){
-        motor.setPower(power);
-    }
-    public double getPos(){
-        return motor.getCurrentPosition();
-    }
-    public void setGoalPos(double Goal){
-        GoalPos = Goal;
-        pidModule.resetIntegral();
+        if(power != lastSetPower){
+            power = ((int)(power * 100)) / 100.f;
+            lastSetPower = power;
+            controller.setMotorPower(this.getPortNumber(), power);
+        }
     }
 
-    public void updGoalPos(){
-        //other coeficients
-        motor.setPower(pidModule.Update(GoalPos - getPos()));
+    public void setAproxVelocity(double velocity){
+        setPower(velocity / MAX_VELOCITY);
     }
-    public void updGoalVel(){
-        //other coeficients
-        motor.setVelocity(pidModule.Update(GoalPos - getPos()));
-    }
-
-    public void changeCoefs(PIDCoefficients pidcoefs){
-        pidModule.SetPIDcoefs(pidcoefs);
-    }
-
-    public MovingState getState(){
-        if(GoalPos == motor.getCurrentPosition())
-            return MovingState.REACHED;
-        return MovingState.MOVING;
-    }
-
-
 
 }

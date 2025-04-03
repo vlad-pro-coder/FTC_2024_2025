@@ -1,33 +1,45 @@
 package org.firstinspires.ftc.teamcode.IntoTheDeep.WraperClasses.softwareWrapers;
 
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.PIDCoefficients;
+import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigurationType;
 
-import org.firstinspires.ftc.teamcode.IntoTheDeep.WraperClasses.hardwareWrapers.motorWraper;
 
 public class Lift {
 
-    public static double goalPos=0;
-    motorWraper fastMotor;
-    PTOInterchangeWraper PTOWraper;
-    public static PIDCoefficients pidcoef = new PIDCoefficients(0.01,0,0);
-    public Lift(HardwareMap hardwareMap){
-        fastMotor = new motorWraper(hardwareMap,"test", motorWraper.DIRECTION.FORWARD,pidcoef);
+    DcMotorEx m1,m2;
+    private double dm1 = 1,dm2 = 1;
+
+
+    public Lift(HardwareMap hardwareMap)
+    {
+        m1 = hardwareMap.get(DcMotorEx.class,"mlift1");
+        m2 = hardwareMap.get(DcMotorEx.class,"mlift2");
+
+        m1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        m1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        MotorConfigurationType mkt;
+        mkt = m1.getMotorType();
+        mkt.setAchieveableMaxRPMFraction(1);
+
+        m1.setMotorType(mkt);
+        m2.setMotorType(mkt);
     }
 
-    public void setGoal(double pos){
-        fastMotor.setGoalPos(goalPos);
+    public void  setPower(double val)
+    {
+        m1.setPower(dm1 * val);
+        m2.setPower(dm2 * val);
     }
 
-    public void updPos(){
-        fastMotor.updGoalPos();
+    public void setDirections(double dm1,double dm2) {
+        this.dm1 = dm1;
+        this.dm2 = dm2;
     }
 
-    public double getPos(){
-        return fastMotor.getPos();
-    }
-
-    public void changecoefs(PIDCoefficients coefs){
-        fastMotor.changeCoefs(coefs);
+    public double getPosition(){
+        return m1.getCurrentPosition();
     }
 }
