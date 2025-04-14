@@ -29,7 +29,9 @@ public class PtoTest extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
         fullLift = new FullLift(hardwareMap);
+        //ptosystem = new PTOsystem(hardwareMap);
         GlobalQueues.PutLiftTask(250, 10, TaskEnums.DISENGAGEPTO);
+        //ptosystem.PTOActivated();
         while (opModeInInit()) {
 
         }
@@ -53,11 +55,10 @@ public class PtoTest extends LinearOpMode {
             }
 
             fullLift.runFullLiftContinuos();
+            //ptosystem.setPower(gamepad1.left_stick_y);
 
             telemetry.addData("lift position",fullLift.lift.getPosition());
             telemetry.addData("power to motors",fullLift.powertomotors);
-            telemetry.addData("task",fullLift.currTask.component1target);
-            telemetry.addData("este specimen wall",fullLift.currTask.TaskState == TaskEnums.SPECIMEN_WALL_HEIGHT);
             telemetry.addData("procentage",fullLift.CurrTaskDoneness());
 
             telemetry.update();

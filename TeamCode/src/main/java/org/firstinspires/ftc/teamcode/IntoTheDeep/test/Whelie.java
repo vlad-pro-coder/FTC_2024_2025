@@ -8,40 +8,44 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.IntoTheDeep.WraperClasses.TaskRelated.GlobalQueues;
 import org.firstinspires.ftc.teamcode.IntoTheDeep.WraperClasses.TaskRelated.TaskEnums;
-import org.firstinspires.ftc.teamcode.IntoTheDeep.WraperClasses.softwareWrapers.Extendo;
 import org.firstinspires.ftc.teamcode.IntoTheDeep.WraperClasses.softwareWrapers.FullLift;
+import org.firstinspires.ftc.teamcode.IntoTheDeep.WraperClasses.softwareWrapers.PTOsystem;
+import org.firstinspires.ftc.teamcode.IntoTheDeep.WraperClasses.softwareWrapers.Wheelie;
 
-@TeleOp(name = "extendo_tunning")
+
+@TeleOp(name = "WheelieTest")
 @Config
-public class extendotunning extends LinearOpMode {
+public class Whelie extends LinearOpMode {
 
-    public static double pos = 0,prevpos = 0;
-
-    public static Extendo extendo;
+    public static boolean pos = false,prevpos = false;
+    Wheelie wheelie;
+    FullLift fullLift;
 
     @Override
     public void runOpMode() throws InterruptedException {
-        telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
-        extendo = new Extendo(hardwareMap);
+        wheelie = new Wheelie(hardwareMap);
+        fullLift = new FullLift(hardwareMap);
+        wheelie.CloseWheelie();
         while (opModeInInit()) {
 
         }
         waitForStart();
 
         while (opModeIsActive()) {
-
-            extendo.runExtendoContinuos(gamepad1);
-
-            if(prevpos != pos){
-                GlobalQueues.PutExtendoTask(pos,30,TaskEnums.DISENGAGEPTO);
+            if(pos != prevpos){
+                if(!pos)
+                wheelie.CloseWheelie();
+                else
+                    wheelie.OpenWheelie();
                 prevpos = pos;
             }
 
-            telemetry.addData("power to motors",extendo.powertomotors);
+            wheelie.runWheelieContinuos();
+
+            telemetry.addData("lift_pos",fullLift.lift.getPosition());
 
             telemetry.update();
         }
-
 
     }
 }

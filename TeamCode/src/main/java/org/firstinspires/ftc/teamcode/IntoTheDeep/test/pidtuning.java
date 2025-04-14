@@ -29,17 +29,15 @@ public class pidtuning extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()) {
-            if(pos != prevpos){
+            /*if(pos != prevpos){
                 GlobalQueues.PutLiftTask(pos, 30, TaskEnums.SPECIMEN_WALL_HEIGHT);
                 prevpos = pos;
             }
 
             fullLift.runFullLiftContinuos();
-
+*/
             telemetry.addData("lift position",fullLift.lift.getPosition());
             telemetry.addData("power to motors",fullLift.powertomotors);
-            telemetry.addData("task",fullLift.currTask.component1target);
-            telemetry.addData("este specimen wall",fullLift.currTask.TaskState == TaskEnums.SPECIMEN_WALL_HEIGHT);
             telemetry.addData("procentage",fullLift.CurrTaskDoneness());
 
             telemetry.update();

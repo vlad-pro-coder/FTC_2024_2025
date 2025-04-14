@@ -26,6 +26,7 @@ public enum TaskEnums {
     SAMPLE_HIGH_BASKET_HEIGHT,
     SAMPLE_LOW_BASKET_HEIGHT,
 
+
     //hang logic
     ENGAGEPTO,
     DISENGAGEPTO,
@@ -36,6 +37,7 @@ public enum TaskEnums {
     //extendo
     EXTEND_TO_POS,
     AFTER_SAMPLE_NEUTRE_POSITION_EXTENDO,
+    RETRACT_EXTENDO_FOR_CYCLE,
 
     //intake
     DROPDOWN_UP,

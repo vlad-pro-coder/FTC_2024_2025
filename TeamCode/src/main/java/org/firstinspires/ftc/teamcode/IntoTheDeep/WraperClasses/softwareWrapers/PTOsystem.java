@@ -15,13 +15,13 @@ import org.firstinspires.ftc.teamcode.IntoTheDeep.WraperClasses.hardwareWrapers.
 
 public class PTOsystem {
 
-    private DcMotorEx mfl,mfr,mbl,mbr;
+    private motorWraper mfl,mfr,mbl,mbr;
 
     public PTOsystem(HardwareMap hardwareMap){
-        mfl = hardwareMap.get(DcMotorEx.class,"mfl");
-        mfr = hardwareMap.get(DcMotorEx.class,"mfr");
-        mbl = hardwareMap.get(DcMotorEx.class,"mbl");
-        mbr = hardwareMap.get(DcMotorEx.class,"mbr");
+        mfl = new motorWraper(hardwareMap,"mfl");
+        mfr = new motorWraper(hardwareMap,"mfr");
+        mbl = new motorWraper(hardwareMap,"mbl");
+        mbr = new motorWraper(hardwareMap,"mbr");
 
         mfl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         mfl.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -31,15 +31,6 @@ public class PTOsystem {
         mbl.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         mbr.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         mbr.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-        MotorConfigurationType mkt;
-        mkt = mfl.getMotorType();
-        mkt.setAchieveableMaxRPMFraction(1);
-
-        mfl.setMotorType(mkt);
-        mfr.setMotorType(mkt);
-        mbl.setMotorType(mkt);
-        mbr.setMotorType(mkt);
     }
 
     public void  setPower(double val)
@@ -51,13 +42,17 @@ public class PTOsystem {
     }
 
     public void PTOActivated(){
-        mbr.setDirection(DcMotorSimple.Direction.REVERSE);
-        mbl.setDirection(DcMotorSimple.Direction.REVERSE);
+        mbr.setDirection(DcMotorEx.Direction.FORWARD);
+        mbl.setDirection(DcMotorEx.Direction.FORWARD);
+        mfl.setDirection(DcMotorEx.Direction.REVERSE);
+        mfr.setDirection(DcMotorEx.Direction.REVERSE);
     }
 
     public void PTODeactivate(){
-        mbr.setDirection(DcMotorSimple.Direction.FORWARD);
-        mbl.setDirection(DcMotorSimple.Direction.FORWARD);
+        mbr.setDirection(DcMotorEx.Direction.FORWARD);
+        mbl.setDirection(DcMotorEx.Direction.REVERSE);
+        mfl.setDirection(DcMotorEx.Direction.REVERSE);
+        mfr.setDirection(DcMotorEx.Direction.FORWARD);
     }
 
 }

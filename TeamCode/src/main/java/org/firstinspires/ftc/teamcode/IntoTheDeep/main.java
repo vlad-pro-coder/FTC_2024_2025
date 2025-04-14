@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode.IntoTheDeep;
 
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
+import static org.firstinspires.ftc.teamcode.IntoTheDeep.WraperClasses.TaskRelated.Commands.isExtendoReady;
+import static org.firstinspires.ftc.teamcode.IntoTheDeep.WraperClasses.TaskRelated.Commands.wheeliedone;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.drive.Drive;
@@ -9,12 +11,16 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.IntoTheDeep.WraperClasses.HelperClasses.Devices.IMUWraper;
+import org.firstinspires.ftc.teamcode.IntoTheDeep.WraperClasses.HelperClasses.Devices.RobotLocalizer;
 import org.firstinspires.ftc.teamcode.IntoTheDeep.WraperClasses.TaskRelated.Commands;
 import org.firstinspires.ftc.teamcode.IntoTheDeep.WraperClasses.TaskRelated.GlobalQueues;
 import org.firstinspires.ftc.teamcode.IntoTheDeep.WraperClasses.TaskRelated.TaskEnums;
 import org.firstinspires.ftc.teamcode.IntoTheDeep.WraperClasses.softwareWrapers.Extendo;
 import org.firstinspires.ftc.teamcode.IntoTheDeep.WraperClasses.softwareWrapers.FullLift;
+import org.firstinspires.ftc.teamcode.IntoTheDeep.WraperClasses.softwareWrapers.Intake;
 import org.firstinspires.ftc.teamcode.IntoTheDeep.WraperClasses.softwareWrapers.Outtake;
+import org.firstinspires.ftc.teamcode.IntoTheDeep.WraperClasses.softwareWrapers.Wheelie;
+import org.firstinspires.ftc.teamcode.IntoTheDeep.test.Localizer_test;
 
 @TeleOp(name = "new_robot")
 @Config
@@ -27,13 +33,15 @@ public class main extends LinearOpMode {
     public static IMUWraper imu;
 
     public static double pos,prevpos;
+    public static RobotLocalizer pinpoint;
 
     @Override
     public void runOpMode() throws InterruptedException {
         Drivetrain = new drivetrain(hardwareMap);
         Commands commands = new Commands(hardwareMap);
-        //imu = new IMUWraper(hardwareMap,"imuProst");
+        imu = new IMUWraper(hardwareMap,"imuProst");
         //ElapsedTime time = new ElapsedTime();
+        pinpoint = new RobotLocalizer(hardwareMap);
 
         while (opModeInInit()) {
             Drivetrain.idleMotors();
@@ -72,6 +80,11 @@ public class main extends LinearOpMode {
 
             telemetry.addData("chasis", Drivetrain.data);
             telemetry.addData("chasis variables",Drivetrain.data_console);*/
+
+            telemetry.addData("imu pitch", imu.getPitch());
+            telemetry.addData("extendo ready", isExtendoReady);
+            telemetry.addData("extendo power", Extendo.powertomotors);
+            telemetry.addData("wheelie done", wheeliedone);
 
 
             //time.reset();

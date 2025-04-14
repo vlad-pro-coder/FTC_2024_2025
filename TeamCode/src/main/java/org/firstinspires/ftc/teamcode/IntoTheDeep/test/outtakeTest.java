@@ -27,9 +27,6 @@ public class outtakeTest extends LinearOpMode {
         while (opModeInInit()) {
             outtake.runOuttakeContinuos();
 
-            telemetry.addData("circular servo pos",outtake.overheads1.CurrPos);
-            telemetry.addData("extendo servo pos",outtake.extendos1.CurrPos);
-            telemetry.addData("claw servo pos",outtake.claws1.CurrPos);
             telemetry.addData("worst error",outtake.CurrTaskDoneness());
 
             telemetry.update();
@@ -42,14 +39,6 @@ public class outtakeTest extends LinearOpMode {
                 PutOuttakeTask(circular,extendo,claw,10, TaskEnums.DISENGAGEPTO);
                 prevcomm =  entercomm;
             }
-
-            telemetry.addData("circular servo pos",outtake.overheads1.CurrPos);
-            telemetry.addData("extendo servo pos",outtake.extendos1.CurrPos);
-            telemetry.addData("claw servo pos",outtake.claws1.CurrPos);
-
-            telemetry.addData("error circular",Math.abs(outtake.overheads1.CurrPos - outtake.currTask.component1target));
-            telemetry.addData("error extendo",Math.abs(outtake.extendos1.CurrPos - outtake.currTask.component2target));
-            telemetry.addData("error claw",Math.abs(outtake.claws1.CurrPos - outtake.currTask.component3target));
 
             telemetry.addData("worst error",outtake.CurrTaskDoneness());
 

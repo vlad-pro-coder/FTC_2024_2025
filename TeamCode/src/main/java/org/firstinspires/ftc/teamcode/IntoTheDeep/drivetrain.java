@@ -20,8 +20,8 @@ public class drivetrain {
         mbl = hardwareMap.get(DcMotorEx.class,"mbl");
         mbr = hardwareMap.get(DcMotorEx.class,"mbr");
 
-        mfl.setDirection(DcMotorSimple.Direction.REVERSE);
-        mbl.setDirection(DcMotorSimple.Direction.REVERSE);
+        mfl.setDirection(DcMotorEx.Direction.REVERSE);
+        mbl.setDirection(DcMotorEx.Direction.REVERSE);
     }
 
     public void idleMotors(){
@@ -37,14 +37,11 @@ public class drivetrain {
         double y = gm1.left_stick_y;
         double rx = gm1.right_trigger - gm1.left_trigger;
 
-        double difference = Math.max(Math.abs(x)+Math.abs(y)+Math.abs(rx*rx*rx/2.0),1.0);
+        double difference = Math.max(Math.abs(x)+Math.abs(y)+Math.abs(rx*rx*rx / 1.7),1.0);
 
-        data = "mfr" + " " + (y+x-rx*rx*rx/2.0)/difference + " " + "mfl" + " " + (y+x+rx*rx*rx/2.0)/difference + " " + "mbr" + " " + (y-x-rx*rx*rx/2.0)/difference + " " + "mbl" + " " + (y-x+rx*rx*rx/2.0)/difference;
-        data_console = "x" + " " + x + "y" + " " + y + "rx" + " " + rx + "difference" + " " + difference;
-
-        mfl.setPower((double)(y-x+rx*rx*rx/2.0)/difference);
-        mbl.setPower((double)(y+x+rx*rx*rx/2.0)/difference);
-        mfr.setPower((double)(y+x-rx*rx*rx/2.0)/difference);
-        mbr.setPower((double)(y-x-rx*rx*rx/2.0)/difference);
+        mfl.setPower((double)(y-x+rx*rx*rx / 1.7)/difference);
+        mbl.setPower((double)(y+x+rx*rx*rx / 1.7)/difference);
+        mfr.setPower((double)(y+x-rx*rx*rx / 1.7)/difference);
+        mbr.setPower((double)(y-x-rx*rx*rx / 1.7)/difference);
     }
 }

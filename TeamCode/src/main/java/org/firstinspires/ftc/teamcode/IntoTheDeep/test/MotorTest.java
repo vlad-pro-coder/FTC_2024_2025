@@ -13,7 +13,7 @@ public class MotorTest extends LinearOpMode {
 
 
     DcMotorEx motor;
-    public static String name = "motor";
+    public static String name = "mlift1";
     public static double power = 0;
     @Override
     public void runOpMode() throws InterruptedException {
@@ -25,7 +25,7 @@ public class MotorTest extends LinearOpMode {
 
         while (opModeIsActive()) {
             motor = hardwareMap.get(DcMotorEx.class,name);
-            motor.setPower(power);
+            motor.setPower(gamepad1.left_stick_y);
         }
     }
 }

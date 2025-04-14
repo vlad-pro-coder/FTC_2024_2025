@@ -29,6 +29,7 @@ public class ServoWithMotionProf {
 
     public void setProfilePosition(double targetPos){
         motionProfile.startMotion(this.CurrPos,targetPos);
+        motionProfile.setInstant(targetPos);
     }
 
     public void updProfile(){

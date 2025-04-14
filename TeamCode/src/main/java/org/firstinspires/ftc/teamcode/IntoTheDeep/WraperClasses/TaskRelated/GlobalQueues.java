@@ -7,11 +7,10 @@ public class GlobalQueues {
 
     public static Queue<Task>LiftQueue = new LinkedList<>();
     public static Queue<Task>ExtendoQueue = new LinkedList<>();
-    //public static Queue<Task>IntakeQueue = new LinkedList<>();
     public static Queue<Task>OuttakeQueue = new LinkedList<>();
-    public static Queue<Task>WheelieQueue = new LinkedList<>();
 
-    public static TaskEnumsOverall currControllerTask = TaskEnumsOverall.NEUTRE_POSITION;
+    public static TaskEnumsOverall currControllerTask = TaskEnumsOverall.SAMPLE_MODE;
+    public static boolean isPTOActive = false;
 
     public static void PutLiftTask(double position,double Threshhold,TaskEnums tasktype){LiftQueue.add(new Task(position,Threshhold,tasktype));}
 
@@ -21,8 +20,13 @@ public class GlobalQueues {
         OuttakeQueue.add(new Task(circularservo,extendoservo,claw,Threshhold,tasktype));
     }
 
-    public static void PutWheelieTask(double position,double Threshhold,TaskEnums tasktype){
-        WheelieQueue.add(new Task(position,Threshhold,tasktype));
+    public static void resetOnStartUp(){
+        LiftQueue.clear();
+        ExtendoQueue.clear();
+        OuttakeQueue.clear();
+
+        currControllerTask = TaskEnumsOverall.SAMPLE_MODE;
+        isPTOActive = false;
     }
 
 }

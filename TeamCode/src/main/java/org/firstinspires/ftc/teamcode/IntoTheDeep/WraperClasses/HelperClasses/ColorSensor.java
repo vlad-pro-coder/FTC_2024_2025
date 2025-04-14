@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.hardware.I2cDeviceSynchSimple;
 
 import com.qualcomm.robotcore.util.Range;
 
+import org.apache.commons.math3.exception.NotANumberException;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 public class ColorSensor{
@@ -97,5 +98,9 @@ public class ColorSensor{
         }
         return Colors.getColorFromRGB(new Colors.Color(RGB.R, RGB.G, RGB.B),getDistance());
 
+    }
+
+    public boolean isOperational(){
+        return !(Double.isNaN(RGB.R) || Double.isNaN(RGB.G) || Double.isNaN(RGB.B) || (RGB.R == 0 && RGB.G == 0 && RGB.B == 0));
     }
 }

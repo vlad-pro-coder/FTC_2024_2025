@@ -14,10 +14,10 @@ import org.firstinspires.ftc.teamcode.IntoTheDeep.WraperClasses.hardwareWrapers.
 
 public class Outtake {
 
-    public ServoWithMotionProf overheads1,overheads2;
-    public static ServoWithMotionProf extendos1;
-    public ServoWithMotionProf claws1;
-    public static Task currTask;
+    private ServoWithMotionProf overheads1,overheads2;
+    private ServoWithMotionProf extendos1;
+    private ServoWithMotionProf claws1;
+    private Task currTask;
 
     public Outtake(HardwareMap hardwareMap){
         overheads1 = new ServoWithMotionProf(hardwareMap,"overhead1",6000,4500,3000);
@@ -27,22 +27,7 @@ public class Outtake {
     }
 
     public void defaultPosition(){
-        /*overheads1.servo.setAngle(300);
-        overheads2.servo.setAngle(300);
-        extendos1.servo.setAngle(280);
-        claws1.servo.setAngle(100);*/
 
-        overheads1.CurrPos = 345;
-        overheads2.CurrPos = 345;
-        extendos1.CurrPos = 200;
-        claws1.CurrPos = 85;
-
-        //overheads1.setProfilePosition(300);
-        //overheads2.setProfilePosition(300);
-        //extendos1.setProfilePosition(200);
-        //claws1.setProfilePosition(50);
-
-        OuttakeQueue.clear();
         PutOuttakeTask(345, 200,85,10,TaskEnums.NEUTRE_POSITION_GENERAL);
     }
 

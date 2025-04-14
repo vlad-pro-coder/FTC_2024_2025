@@ -10,18 +10,22 @@ import org.firstinspires.ftc.teamcode.IntoTheDeep.WraperClasses.hardwareWrapers.
 @Config
 public class servotest extends LinearOpMode {
 
-    public static double maxvel = 3000,accel = 4500,decel = 2000;
+    public static double maxvel = 1000,accel = 1000,decel = 1000;
 
-    public static String name="extendos1";
-    public static String prevname="extendos1";
+    public static String name1="wheelie1";
+    public static String name2="wheelie2";
+    public static String prevname="wheelie1";
 
     public static double anglePosition = 0;
     public static double prevangle = 0;
 
+    ///wheelie1 closed = 147, wheelie2 closed = 211
+    ///wheelie1 open = 250, wheelie2 open = 108
+
 
     @Override
     public void runOpMode() throws InterruptedException {
-        ServoWithMotionProf servo1 = new ServoWithMotionProf(hardwareMap,name,maxvel,accel,decel);
+        ServoWithMotionProf servo1 = new ServoWithMotionProf(hardwareMap,name1,maxvel,accel,decel);
         while (opModeInInit()) {
 
         }
@@ -29,9 +33,9 @@ public class servotest extends LinearOpMode {
 
         while(opModeIsActive()) {
 
-            if(!prevname.equals(name)){
-                servo1.Change_servo(name);
-                prevname = name;
+            if(!prevname.equals(name1)){
+                servo1.Change_servo(name1);
+                prevname = name1;
             }
 
             if (anglePosition != prevangle) {
@@ -49,6 +53,7 @@ public class servotest extends LinearOpMode {
             telemetry.update();
 
             servo1.updProfile();
+
         }
     }
 }

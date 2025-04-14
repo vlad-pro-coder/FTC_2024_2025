@@ -23,13 +23,6 @@ public class IntakeTest extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-            telemetry.addData("culori",intake.colorsensor.getRawColors());
-            telemetry.addData("distance",intake.colorsensor.getDistance());
-
-            telemetry.addData("red",intake.colorsensor.getColorSeenBySensor() == Colors.ColorType.RED);
-            telemetry.addData("yellow",intake.colorsensor.getColorSeenBySensor() == Colors.ColorType.YELLOW);
-            telemetry.addData("blue",intake.colorsensor.getColorSeenBySensor() == Colors.ColorType.BLUE);
-            telemetry.addData("none",intake.colorsensor.getColorSeenBySensor() == Colors.ColorType.NONE);
 
             telemetry.update();
 
